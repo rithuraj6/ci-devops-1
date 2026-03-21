@@ -26,6 +26,23 @@ pipeline {
                 sh 'mvn package'
             }
         }
+         stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                        sh 'mvn sonar:sonar'
+               
+                }
+
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time:2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
         stage('Docker Build') {
             steps {
