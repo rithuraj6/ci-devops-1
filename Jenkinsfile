@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/rithuraj6/ci-devops-1.git'
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
