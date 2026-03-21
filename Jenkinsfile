@@ -1,7 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        label 'docker-agent'
+    }
+
+    environment {
+        DOCKER_IMAGE = "rithuraj6/ci-cd-devops"
+    }
 
     stages {
+
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
@@ -22,7 +29,19 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ci-cd-devops:1.0 .'
+                sh 'docker build -t ci-cd-devops:${BUILD_NUMBER} .'
+            }
+        }
+
+        stage('Docker Tag') {
+            steps {
+                sh 'docker tag ci-cd-devops:${BUILD_NUMBER} $DOCKER_IMAGE:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                sh 'docker push $DOCKER_IMAGE:${BUILD_NUMBER}'
             }
         }
     }
