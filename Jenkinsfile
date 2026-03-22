@@ -99,4 +99,24 @@ pipeline {
             }
         }
     }
+
+
+    post {
+
+       success {
+           emailext(
+              subject: " SUCCESS: Build #${BUILD_NUMBER}",
+              body: "Build successful for ${JOB_NAME}",
+              to: "your-email@gmail.com"
+            )
+        }
+
+        failure {
+            emailext(
+                 subject: "FAILURE: Build #${BUILD_NUMBER}",
+                 body: "Build failed for ${JOB_NAME}",
+                 to: "your-email@gmail.com"
+             )
+        }
+    }
 }
