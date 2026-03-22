@@ -2,12 +2,31 @@ pipeline {
     agent {
         label 'docker-agent'
     }
+    options {
+	skipDefaultCheckout(true)
+    }
+
 
     environment {
         DOCKER_IMAGE = "rithuraj6/ci-cd-devops"
     }
 
+    parameters {
+	gitParameter(
+	   name: 'BRANCH',
+	   type: 'PT_BRANCH',
+	   defaultValue: 'main',
+	   description:'Select branch to build'
+         )
+    }
     stages {
+	
+	stage('Checkout') {
+	    steps {
+		git branch:"${params.BRANCH}",
+			url:'https://github.com/rithuraj6/ci-devops-1.git'
+	     }
+	}
 
         stage('Build') {
             steps {
