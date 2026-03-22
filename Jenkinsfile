@@ -23,8 +23,8 @@ pipeline {
 	
 	stage('Checkout') {
 	    steps {
-		git branch:"${params.BRANCH}",
-			url:'https://github.com/rithuraj6/ci-devops-1.git'
+		 git url:'https://github.com/rithuraj6/ci-devops-1.git',
+			branch: "${params.BRANCH.replace('origin/', '')}"
 	     }
 	}
 
